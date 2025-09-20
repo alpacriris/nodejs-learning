@@ -5,6 +5,7 @@
 
 0. [Uso de `this` y `bind()` en funciones y objetos en JavaScript](#0-uso-de-this-y-bind-en-funciones-y-objetos-en-javascript)
 
+1. [Funciones y clausuras en JavaScript](#1-funciones-y-clausuras-en-javascript)
 
 ---
 
@@ -97,3 +98,59 @@ console.log(obj02.fan()); // "fun no me referencia"
 
 
 ## 1. Funciones y clausuras en JavaScript
+
+**Código:** [`j01-funciones-clausuras.js`](./j01-funciones-clausuras.js/)
+
+#### Resultado de la ejecución:
+```bash
+> node .\j01-funciones-clausuras.js
+argumentos de f: 0  ---  100
+función x:       0       100      Infinity
+función w:       0       100     -1000
+función ww:      0       100     -1000
+ww(): -900
+u=  Infinity
+```
+
+#### Explicación:
+**1. Variables iniciales**
+```javascript
+var x;
+var w, ww;
+var u = Infinity;
+```
+- `x`, `w`, `ww` se declaran sin valor.
+- `u` se declara globalmente con valor Infinity.
+
+**2. Definición de `f(y,z)`**
+- Dentro de `f` se crean las funciones:
+
+- `x`: recuerda `y`, `z` y la variable global `u`.
+
+- `w(u)`: tiene su propio parámetro `u` y además define `ww`, que usará ese `u` junto con `y` y `z`.
+
+- `f` imprime los argumentos recibidos.
+
+**3. Ejecución de `f(0,100)`**
+- Se definen `x` y `w` con `y = 0` y `z = 100`.
+
+**4. Llamada a `x()`**
+- Usa `y = 0`, `z = 100` y la `u` global (`Infinity`).
+
+**5. Llamada a `w(-1000)`**
+- Usa `y = 0`, `z = 100`, `u = -1000` (parámetro local de `w`).
+- Además, define `ww` con ese `u`.
+
+**6. Llamada a `ww()`**
+- `ww` usa `y = 0`, `z = 100`, `u = -1000`.  
+- Imprime y devuelve `0 + 100 + (-1000) = -900`.
+
+**7. Extra: variable global `u`**
+- Aquí se imprime la `u` global, que sigue siendo `Infinity`.
+
+### Conclusiones resumidas de `j01-funciones-clausuras.js`
+
+- Las clausuras permiten que funciones internas recuerden el contexto de la función que las creó.  
+- Variables de la función exterior (`y`, `z`) permanecen accesibles dentro de funciones internas.  
+- Parámetros locales (`u`) pueden ocultar variables globales.  
+- `ww` mantiene `y` y `z` de `f` y `u` de `w`, mostrando cómo funciona el entorno léxico en JavaScript.

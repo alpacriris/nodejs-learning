@@ -1,5 +1,5 @@
 
-//Decalaración de variables. Uso de funciones y clausuras.
+//j01-funciones-clausuras: Funciones y clausuras en JavaScript
 
 //Variables
 
@@ -27,5 +27,5 @@ w(-1000);
 console.log("ww(): " + ww());
 
 //¿Cuál es el resultado de la ejecución de la sentencia
-//console.log("u= ",u);
+console.log("u= ",u);
 //?

@@ -3,9 +3,9 @@ Repositorio con ejemplos y prácticas de programación en Node.js.
 
 ## Índice
 
-1. [Introducción en JavaScript y Node.js](#1-introduccion-en-javascript-y-nodejs)
+1. [Introducción a JavaScript y Node.js](#1-introduccion-a-javascript-y-nodejs)
 
-## 1. Introducción en JavaScript y Node.js
+## 1. Introducción a JavaScript y Node.js
 
 **Carpeta:**  [`1-intro-nodejs/`](./1-intro-nodejs/) 
 
