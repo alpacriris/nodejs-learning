@@ -9,7 +9,10 @@
 
 2. [Clausuras de variables y funciones](#2-clausuras-de-variables-y-funciones)
 
-3. [Clausuras y funciones anidadas](#3-clausuras-y-funciones-anidadas)  
+3. [Clausuras y funciones anidadas](#3-clausuras-y-funciones-anidadas)
+
+4. [Uso de operaciones asíncronas con setTimeout](#4-uso-de-operaciones-asincronas-con-settimeout)
+
 
 
 ---
@@ -214,6 +217,7 @@ g0: incremento de x:  10
         traza:  inicio-g1-g0-g1-g0-g1-g0-g1-g0-g1-g0
 -100
 ```
+#### Explicación:
 
 **Primera iteración (`main(-100)`):**  
 - `y = -100`  
@@ -246,3 +250,37 @@ g0: incremento de x:  10
 - La práctica muestra cómo las clausuras permiten mantener y manipular múltiples estados internos de forma independiente (como `y`, `x` y `traza`).  
 - `console.log(gety())` imprime `-100` porque `gety` apunta a `getY()`, que devuelve la `y` original de `main`. 
 - Los incrementos de `y` en `f` y `g1` no afectan a esa `y` inicial, solo a las copias locales.  
+
+## 4. Uso de operaciones asíncronas con setTimeout
+
+**Código:** [`j04-settimeout-asincrono.js`](./j04-settimeout-asincrono.js/)
+
+#### Resultado de la ejecución:
+```bash
+> node .\j04-settimeout-asincrono.js
+Terminado codigo script  valor actual de i:  10
+10
+10
+10
+10
+10
+10
+10
+10
+10
+10
+```
+
+#### Explicación:
+
+- El `for` se ejecuta inmediatamente, incrementando `i` hasta que vale `10`.  
+- Cuando acaba el bucle, la variable `i` ya es `10`.  
+- `setTimeout(...)` no ejecuta la función en ese momento, sino que la agenda para más tarde.  
+- Todas las funciones que has pasado a `setTimeout` son **closures** que capturan la misma `i` (la del ámbito global del bucle).  
+- Como `i` ya vale `10` cuando se ejecutan los `setTimeout`, todas imprimen `10`, no `0, 1, 2...`.  
+
+### Conclusiones resumidas de `j04-asincronas-settimeout`
+
+- `setTimeout` agenda la ejecución de funciones para después del flujo principal.  
+- Todas las funciones acceden a la misma variable `i` debido a closures.  
+- Muestra cómo Node.js maneja asincronía y el event loop.

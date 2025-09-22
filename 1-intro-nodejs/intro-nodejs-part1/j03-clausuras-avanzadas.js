@@ -1,5 +1,5 @@
 
-//Clausuras de variables y funciones.
+// j03-clausuras-avanzadas.js: Clausuras de variables y funciones.
 
 var gety;
 

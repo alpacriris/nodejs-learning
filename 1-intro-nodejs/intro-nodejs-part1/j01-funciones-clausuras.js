@@ -1,5 +1,5 @@
 
-//j01-funciones-clausuras: Funciones y clausuras en JavaScript
+// j01-funciones-clausuras: Funciones y clausuras en JavaScript
 
 //Variables
 
