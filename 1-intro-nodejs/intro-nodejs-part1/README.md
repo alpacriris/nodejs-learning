@@ -9,6 +9,8 @@
 
 2. [Clausuras de variables y funciones](#2-clausuras-de-variables-y-funciones)
 
+3. [Clausuras y funciones anidadas](#3-clausuras-y-funciones-anidadas)  
+
 
 ---
 
@@ -160,6 +162,8 @@ var u = Infinity;
 
 ## 2. Clausuras de variables y funciones
 
+**Código:** [`j02-clausuras-variables-funciones.js`](./j02-clausuras-variables-funciones.js/)
+
 ##### Resultado de la ejecución:
 ```bash
 > node .\j02-clausuras-variables-funciones.js
@@ -179,3 +183,66 @@ y+g():  6
 - Una clausura recuerda las variables de su entorno, incluso después de que la función externa haya terminado.  
 - En este caso, `z` mantiene acceso a `y` y `x`.  
 - Cada llamada a `z()` sigue modificando los mismos `y` y `x`, mostrando cómo las clausuras permiten manejar estados internos de forma privada.  
+
+## 3. Clausuras y funciones anidadas
+
+**Código:** [`j03-clausuras-avanzadas.js`](./j03-clausuras-avanzadas.js/)
+
+#### Resultado de la ejecución:
+```bash
+> node .\j03-clausuras-avanzadas.js
+        traza:  inicio
+g1: incremento de y:  -99
+        traza:  inicio-g1
+g0: incremento de x:  2
+        traza:  inicio-g1-g0
+g1: incremento de y:  -97
+        traza:  inicio-g1-g0-g1
+g0: incremento de x:  4
+        traza:  inicio-g1-g0-g1-g0
+g1: incremento de y:  -95
+        traza:  inicio-g1-g0-g1-g0-g1
+g0: incremento de x:  6
+        traza:  inicio-g1-g0-g1-g0-g1-g0
+g1: incremento de y:  -93
+        traza:  inicio-g1-g0-g1-g0-g1-g0-g1
+g0: incremento de x:  8
+        traza:  inicio-g1-g0-g1-g0-g1-g0-g1-g0
+g1: incremento de y:  -91
+        traza:  inicio-g1-g0-g1-g0-g1-g0-g1-g0-g1
+g0: incremento de x:  10
+        traza:  inicio-g1-g0-g1-g0-g1-g0-g1-g0-g1-g0
+-100
+```
+
+**Primera iteración (`main(-100)`):**  
+- `y = -100`  
+- `x = 100 + (-100) = 0` → par → `x % 2 == 0` → llama a `g1()`  
+
+`g1()` hace:  
+- `traza += "-g1"` → `"inicio-g1"`  
+- `y++` → `y = -99`  
+- `return f(y)` → llama `f(-99)`  
+
+**Segunda iteración (`f(-99)`):**  
+- `x = 100 + (-99) = 1` → impar → llama a `g0()`  
+
+`g0()` hace:  
+- `traza += "-g0"` → `"inicio-g1-g0"`  
+- `x++` → `x = 2`  
+- `return f(++y)` → `y = -98`, llama `f(-98)`  
+
+
+**Patrón:**  
+- Se alternan `g1` y `g0` porque `x` alterna par/impar.  
+- Cada `g1` incrementa `y`.  
+- Cada `g0` incrementa `x`.  
+- `traza` acumula el historial de llamadas. 
+
+### Conclusiones resumidas de `j03-clausuras-avanzadas`
+
+- La variable `traza` acumula el historial de llamadas (`g1`, `g0`) y muestra cómo se conserva el estado entre ejecuciones.  
+- El flujo alterna entre `g1` y `g0` porque `x` cambia entre par e impar.  
+- La práctica muestra cómo las clausuras permiten mantener y manipular múltiples estados internos de forma independiente (como `y`, `x` y `traza`).  
+- `console.log(gety())` imprime `-100` porque `gety` apunta a `getY()`, que devuelve la `y` original de `main`. 
+- Los incrementos de `y` en `f` y `g1` no afectan a esa `y` inicial, solo a las copias locales.  
