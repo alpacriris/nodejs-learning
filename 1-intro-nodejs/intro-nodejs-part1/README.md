@@ -7,6 +7,9 @@
 
 1. [Funciones y clausuras en JavaScript](#1-funciones-y-clausuras-en-javascript)
 
+2. [Clausuras de variables y funciones](#2-clausuras-de-variables-y-funciones)
+
+
 ---
 
 ## 0. Uso de `this` y `bind()` en funciones y objetos en JavaScript
@@ -154,3 +157,25 @@ var u = Infinity;
 - Variables de la función exterior (`y`, `z`) permanecen accesibles dentro de funciones internas.  
 - Parámetros locales (`u`) pueden ocultar variables globales.  
 - `ww` mantiene `y` y `z` de `f` y `u` de `w`, mostrando cómo funciona el entorno léxico en JavaScript.
+
+## 2. Clausuras de variables y funciones
+
+##### Resultado de la ejecución:
+```bash
+> node .\j02-clausuras-variables-funciones.js
+y: -99
+incremento de x:  101
+y+g():  2
+y: -98
+incremento de x:  102
+y+g():  4
+y: -97
+incremento de x:  103
+y+g():  6
+```
+
+### Conclusiones resumidas de `j02-clausuras.js`
+
+- Una clausura recuerda las variables de su entorno, incluso después de que la función externa haya terminado.  
+- En este caso, `z` mantiene acceso a `y` y `x`.  
+- Cada llamada a `z()` sigue modificando los mismos `y` y `x`, mostrando cómo las clausuras permiten manejar estados internos de forma privada.  
