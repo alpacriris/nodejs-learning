@@ -13,6 +13,7 @@
 
 4. [Uso de operaciones asíncronas con setTimeout](#4-uso-de-operaciones-asincronas-con-settimeout)
 
+5. [Uso de setTimeout con cierre de variables](#5-uso-de-settimeout-con-cierre-de-variables)
 
 
 ---
@@ -284,3 +285,44 @@ Terminado codigo script  valor actual de i:  10
 - `setTimeout` agenda la ejecución de funciones para después del flujo principal.  
 - Todas las funciones acceden a la misma variable `i` debido a closures.  
 - Muestra cómo Node.js maneja asincronía y el event loop.
+
+## 5. Uso de setTimeout con cierre de variables
+
+**Código:** [`j05-settimeout-clausura.js`](./j05-settimeout-clausura.js/)
+
+#### Resultado de la ejecución:
+
+```bash
+> node .\j05-settimeout-clausura.js 
+Terminado codigo script  valor actual de i:  10
+índice:  0
+índice:  1
+índice:  2
+índice:  3
+índice:  4
+índice:  5
+índice:  6
+índice:  7
+índice:  8
+índice:  9
+```
+
+#### Explicación:
+
+- El `for` corre de inmediato, dejando `i = 10` al terminar.  
+- Cada llamada a `setTimeout` recibe como *callback* el resultado de ejecutar la función anónima con el valor actual de `i`.  
+- Es decir, en cada iteración se ejecuta `function(índice){ ... }(i)` en cada iteración.
+
+- Eso devuelve otra función (**un closure**) que recuerda el valor concreto de `índice`.
+
+- Ahora cada temporizador tiene su propia copia de `índice` (`0, 1, 2, …, 9`).
+
+- Por eso, cuando se ejecutan los `setTimeout`, imprimen los valores correctos en lugar de todos `10`.
+
+
+### Conclusiones resumidas de `j05-settimeout-clausura`
+
+- Las clausuras capturan el valor de cada iteración del bucle.  
+- Cada callback conserva su propio estado independiente.  
+- Evita el problema de la práctica 4, donde todos compartían la misma `i`.  
+- Ejemplo de cómo combinar asincronía con closures en Node.js.
