@@ -15,6 +15,8 @@
 
 5. [Uso de setTimeout con cierre de variables](#5-uso-de-settimeout-con-cierre-de-variables)
 
+6. [Uso de setTimeout con let](#6-uso-de-settimeout-con-let)
+
 
 ---
 
@@ -326,3 +328,41 @@ Terminado codigo script  valor actual de i:  10
 - Cada callback conserva su propio estado independiente.  
 - Evita el problema de la práctica 4, donde todos compartían la misma `i`.  
 - Ejemplo de cómo combinar asincronía con closures en Node.js.
+
+## 6. Uso de setTimeout con let
+
+**Código:** [`j06-settimeout-let.js`](./j06-settimeout-let.js/)
+
+#### Resultado de la ejecución:
+```bash
+> node .\j06-settimeout-let.js     
+Terminado codigo script  valor actual de i:  10
+10
+10
+10
+10
+10
+10
+10
+10
+10
+10
+```
+
+#### Explicación de la práctica `j06-settimeout-let.js`
+
+- Aquí se usa `let` en lugar de `var` para declarar `i`.
+
+- La diferencia clave es que `let` crea un nuevo *binding* de `i` en cada iteración del bucle.
+
+- Cada callback de `setTimeout` captura el valor propio de `i` en esa iteración.
+
+- Por eso los `setTimeout` imprimen correctamente `0, 1, 2, ..., 9`.
+
+- Con `var` (como en la práctica 4), todos los callbacks compartían la misma `i` y se imprimía siempre `10`.
+
+### Conclusiones resumidas de `j06-settimeout-let`
+
+- `let` soluciona el problema de cierre de variables en bucles asincrónicos.  
+- Cada iteración conserva su propio valor de `i`.  
+
