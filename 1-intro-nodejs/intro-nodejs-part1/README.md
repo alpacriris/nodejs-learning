@@ -17,6 +17,7 @@
 
 6. [Uso de setTimeout con let](#6-uso-de-settimeout-con-let)
 
+7. [Uso de setTimeout con var y let dentro del bucle](#7-uso-de-settimeout-con-var-y-let-dentro-del-bucle)
 
 ---
 
@@ -364,5 +365,40 @@ Terminado codigo script  valor actual de i:  10
 ### Conclusiones resumidas de `j06-settimeout-let`
 
 - `let` soluciona el problema de cierre de variables en bucles asincrónicos.  
-- Cada iteración conserva su propio valor de `i`.  
+- Cada iteración conserva su propio valor de `i`. 
 
+## 7. Uso de setTimeout con var y let dentro del bucle
+
+**Código:** [`j07-settimeout-var-let.js`](./j07-settimeout-var-let.js/)
+
+#### Resultado de la ejecución:
+```bash
+> node .\j07-settimeout-var-let.js
+Terminado codigo script    valor actual de i:  10
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+```
+
+En este ejemplo se usa `var` para la variable `i`, pero dentro del bucle se declara `let k = i`.  
+
+De esta manera:  
+
+- `i` se comporta como una variable global al bucle (`var` no crea un nuevo binding en cada iteración).  
+- Pero `k` es un nuevo binding en cada iteración gracias a `let`.  
+- Cada callback de `setTimeout` captura su propio `k`, que mantiene el valor correcto en cada iteración (0, 1, 2, ..., 9).  
+
+Así se consigue el mismo resultado que en la práctica 6, pero usando una variable auxiliar `k`.  
+
+### Conclusiones resumidas de j07-settimeout-var-let
+
+- `var` no es adecuado para bucles asincrónicos porque no crea un binding nuevo en cada iteración.  
+- Al introducir `let` dentro del bucle (en `k`), cada callback tiene su propia copia.  
+- Es una solución alternativa al uso directo de `let` en la variable del bucle.  
