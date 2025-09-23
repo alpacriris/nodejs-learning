@@ -25,6 +25,7 @@
 
 10. [Uso de setTimeout con paso de argumentos](#10-uso-de-settimeout-con-paso-de-argumentos)
 
+11. [Uso de setTimeout con función auxiliar y closure](#11-uso-de-settimeout-con-funcion-auxiliar-y-closure)
 
 ---
 
@@ -517,3 +518,39 @@ Terminado codigo script    valor actual de i:  10
 - Pasar argumentos a `setTimeout` no soluciona el problema de `var` compartida.  
 - Cada callback recibe su propio `índice` correctamente, pero `i` sigue siendo compartida.  
 - Muestra cómo combinar argumentos con closures y temporizadores en Node.js.
+
+## 11. Uso de setTimeout con función auxiliar y closure
+
+**Código:** [`j11-settimeout-funcion.js`](./j11-settimeout-funcion.js/)
+
+#### Resultado de la ejecución:
+```bash
+> node .\j11.js                
+Terminado codigo script    valor actual de i:  10
+índice:   0   i:   10
+índice:   1   i:   10
+índice:   2   i:   10
+índice:   3   i:   10
+índice:   4   i:   10
+índice:   5   i:   10
+índice:   6   i:   10
+índice:   7   i:   10
+índice:   8   i:   10
+índice:   9   i:   10
+```
+
+- La función `tempo` recibe el valor de `índice` como argumento en cada iteración.
+
+- Dentro de `setTimeout`, la función callback recuerda `índice` gracias al parámetro de `tempo` (closure).
+
+- La variable `i` sigue siendo global y compartida (`var`), así que todos los callbacks ven `i = 10`.
+
+- Cada `setTimeout` imprime correctamente `índice` (0 a 9) y siempre `i = 10`.
+
+### Conclusiones resumidas de j11-settimeout-funcion
+
+- Pasar el valor como argumento a otra función permite crear closures que recuerdan la iteración.
+- La variable global `i` sigue compartida, mostrando su valor final en todos los callbacks.
+- Este patrón es útil para evitar problemas de bucles con `var` en callbacks asincrónicos.
+
+
