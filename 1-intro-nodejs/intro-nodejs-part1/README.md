@@ -21,6 +21,9 @@
 
 8. [Uso de setTimeout con for, let y IIFE](#8-uso-de-settimeout-con-for-let-y-iife)
 
+9. [Uso de setTimeout con var y cierre de variables](#9-uso-de-settimeout-con-var-y-cierre-de-variables)
+
+
 
 ---
 
@@ -250,7 +253,7 @@ g0: incremento de x:  10
 - Cada `g0` incrementa `x`.  
 - `traza` acumula el historial de llamadas. 
 
-### Conclusiones resumidas de `j03-clausuras-avanzadas`
+### Conclusiones resumidas de `j03-clausuras-avanzadas.js`
 
 - La variable `traza` acumula el historial de llamadas (`g1`, `g0`) y muestra cómo se conserva el estado entre ejecuciones.  
 - El flujo alterna entre `g1` y `g0` porque `x` cambia entre par e impar.  
@@ -286,7 +289,7 @@ Terminado codigo script  valor actual de i:  10
 - Todas las funciones que has pasado a `setTimeout` son **closures** que capturan la misma `i` (la del ámbito global del bucle).  
 - Como `i` ya vale `10` cuando se ejecutan los `setTimeout`, todas imprimen `10`, no `0, 1, 2...`.  
 
-### Conclusiones resumidas de `j04-asincronas-settimeout`
+### Conclusiones resumidas de `j04-asincronas-settimeout.js`
 
 - `setTimeout` agenda la ejecución de funciones para después del flujo principal.  
 - Todas las funciones acceden a la misma variable `i` debido a closures.  
@@ -326,7 +329,7 @@ Terminado codigo script  valor actual de i:  10
 - Por eso, cuando se ejecutan los `setTimeout`, imprimen los valores correctos en lugar de todos `10`.
 
 
-### Conclusiones resumidas de `j05-settimeout-clausura`
+### Conclusiones resumidas de `j05-settimeout-clausura.js`
 
 - Las clausuras capturan el valor de cada iteración del bucle.  
 - Cada callback conserva su propio estado independiente.  
@@ -365,7 +368,7 @@ Terminado codigo script  valor actual de i:  10
 
 - Con `var` (como en la práctica 4), todos los callbacks compartían la misma `i` y se imprimía siempre `10`.
 
-### Conclusiones resumidas de `j06-settimeout-let`
+### Conclusiones resumidas de `j06-settimeout-let.js`
 
 - `let` soluciona el problema de cierre de variables en bucles asincrónicos.  
 - Cada iteración conserva su propio valor de `i`. 
@@ -400,7 +403,7 @@ De esta manera:
 
 Así se consigue el mismo resultado que en la práctica 6, pero usando una variable auxiliar `k`.  
 
-### Conclusiones resumidas de j07-settimeout-var-let
+### Conclusiones resumidas de `j07-settimeout-var-let.js`
 
 - `var` no es adecuado para bucles asincrónicos porque no crea un binding nuevo en cada iteración.  
 - Al introducir `let` dentro del bucle (en `k`), cada callback tiene su propia copia.  
@@ -408,9 +411,11 @@ Así se consigue el mismo resultado que en la práctica 6, pero usando una varia
 
 ## 8. Uso de setTimeout con for, let y IIFE
 
+**Código:** [`j08-settimeout-for-let.js`](./j08-settimeout-for-let.js/)
+
 #### Resultado de la ejecución:
 ```bash
-> node .\j08.js
+> node .\j08-settimeout-for-let.js
 Terminado codigo script
 0
 1
@@ -438,8 +443,43 @@ Esto se debe a que `i` fue declarada con `let` dentro del `for`, y su ámbito es
 
 A diferencia de `var`, no se "filtra" al ámbito exterior.
 
-#### Conclusiones resumidas de j08-settimeout-for-let-iife
+#### Conclusiones resumidas de `j08-settimeout-for-let-iife.js`
 
 - `let` dentro del `for` ya crea un binding nuevo de `i` en cada iteración.  
 - La IIFE asegura el mismo efecto, pero aquí resulta innecesaria.  
 - Intentar acceder a `i` fuera del `for` da error porque está fuera de su ámbito.
+
+## 9. Uso de setTimeout con var y cierre de variables
+
+**Código:** [`j09-settimeout-var-clausura.js`](./j09-settimeout-var-clausura.js/)
+
+
+#### Resultado de la ejecución:
+```bash
+> node .\j09-settimeout-var-clausura.js
+Terminado codigo script    valor actual de i:  10
+índice:   0   i:   10
+índice:   1   i:   10
+índice:   2   i:   10
+índice:   3   i:   10
+índice:   4   i:   10
+índice:   5   i:   10
+índice:   6   i:   10
+índice:   7   i:   10
+índice:   8   i:   10
+índice:   9   i:   10
+```
+
+- El `for` usa `var i`, que tiene **ámbito de función**, así que todos los `setTimeout` comparten la misma `i`. Al final del bucle, `i = 10`.
+
+- La IIFE `(function(índice){ ... })(i)` crea un **closure** para capturar el valor actual de `i` en `índice`.
+
+- Cada `setTimeout` se ejecuta después de `i * 1000` ms, mostrando `índice` correcto (0–9) y `i` siempre 10.
+
+- El `console.log` final se ejecuta **antes** de los `setTimeout`, mostrando `i = 10`.
+
+### Conclusiones resumidas de `j09-settimeout-var-clausura.js`
+
+- La IIFE permite capturar el valor de la iteración (`índice`) en un closure.  
+- La variable `i` sigue siendo compartida y su valor final se refleja en todos los callbacks.  
+- Este patrón combina asincronía y closures para mantener valores individuales en bucles con `var`.
