@@ -23,6 +23,7 @@
 
 9. [Uso de setTimeout con var y cierre de variables](#9-uso-de-settimeout-con-var-y-cierre-de-variables)
 
+10. [Uso de setTimeout con paso de argumentos](#10-uso-de-settimeout-con-paso-de-argumentos)
 
 
 ---
@@ -453,7 +454,6 @@ A diferencia de `var`, no se "filtra" al ámbito exterior.
 
 **Código:** [`j09-settimeout-var-clausura.js`](./j09-settimeout-var-clausura.js/)
 
-
 #### Resultado de la ejecución:
 ```bash
 > node .\j09-settimeout-var-clausura.js
@@ -483,3 +483,37 @@ Terminado codigo script    valor actual de i:  10
 - La IIFE permite capturar el valor de la iteración (`índice`) en un closure.  
 - La variable `i` sigue siendo compartida y su valor final se refleja en todos los callbacks.  
 - Este patrón combina asincronía y closures para mantener valores individuales en bucles con `var`.
+
+## 10. Uso de setTimeout con paso de argumentos
+
+**Código:** [`j10-settimeout-args.js`](./j10-settimeout-args.js/)
+
+#### Resultado de la ejecución:
+```bash
+> node .\j10-settimeout-args.js
+Terminado codigo script    valor actual de i:  10
+índice:   0   i:   10
+índice:   1   i:   10
+índice:   2   i:   10
+índice:   3   i:   10
+índice:   4   i:   10
+índice:   5   i:   10
+índice:   6   i:   10
+índice:   7   i:   10
+índice:   8   i:   10
+índice:   9   i:   10
+```
+
+- Aquí se usa el tercer parámetro de `setTimeout` para pasar argumentos a la función callback.
+
+- La función callback recibe `índice`, pero dentro del closure se sigue usando `i`, que es `var` y está compartida.
+
+- Como `i` ya vale 10 cuando se ejecutan los temporizadores, todos los logs muestran `i: 10`.
+
+- Los valores de `índice` provienen del argumento que pasa `setTimeout` y son correctos (0 a 9).
+
+### Conclusiones resumidas de `j10-settimeout-args.js`
+
+- Pasar argumentos a `setTimeout` no soluciona el problema de `var` compartida.  
+- Cada callback recibe su propio `índice` correctamente, pero `i` sigue siendo compartida.  
+- Muestra cómo combinar argumentos con closures y temporizadores en Node.js.
