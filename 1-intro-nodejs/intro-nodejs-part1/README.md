@@ -19,6 +19,9 @@
 
 7. [Uso de setTimeout con var y let dentro del bucle](#7-uso-de-settimeout-con-var-y-let-dentro-del-bucle)
 
+8. [Uso de setTimeout con for, let y IIFE](#8-uso-de-settimeout-con-for-let-y-iife)
+
+
 ---
 
 ## 0. Uso de `this` y `bind()` en funciones y objetos en JavaScript
@@ -402,3 +405,41 @@ Así se consigue el mismo resultado que en la práctica 6, pero usando una varia
 - `var` no es adecuado para bucles asincrónicos porque no crea un binding nuevo en cada iteración.  
 - Al introducir `let` dentro del bucle (en `k`), cada callback tiene su propia copia.  
 - Es una solución alternativa al uso directo de `let` en la variable del bucle.  
+
+## 8. Uso de setTimeout con for, let y IIFE
+
+#### Resultado de la ejecución:
+```bash
+> node .\j08.js
+Terminado codigo script
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+```
+
+En este ejemplo se combina:
+
+- `let i` en el `for`, lo que ya garantiza que cada iteración tenga su propio valor de `i`.  
+- Una **IIFE (Immediately Invoked Function Expression)** que recibe `i` como parámetro (`function(x){ ... }(i)`), devolviendo un closure que recuerda ese valor.  
+
+Esto hace que cada `setTimeout` tenga su copia propia de `i`, exactamente como en prácticas anteriores.  
+En este caso, la IIFE es redundante, porque `let` ya soluciona el problema por sí mismo.
+
+Esa línea `console.log("i= ",i);` provocaría un error de referencia (`ReferenceError: i is not defined`).
+
+Esto se debe a que `i` fue declarada con `let` dentro del `for`, y su ámbito es solo el bucle.
+
+A diferencia de `var`, no se "filtra" al ámbito exterior.
+
+#### Conclusiones resumidas de j08-settimeout-for-let-iife
+
+- `let` dentro del `for` ya crea un binding nuevo de `i` en cada iteración.  
+- La IIFE asegura el mismo efecto, pero aquí resulta innecesaria.  
+- Intentar acceder a `i` fuera del `for` da error porque está fuera de su ámbito.
